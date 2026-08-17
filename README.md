@@ -69,7 +69,8 @@ Agent 会依据 `SKILL.md` 检查运行环境，并执行对应平台的脚本�
 5. 校验完整性、重新签名并彻底重启 WorkBuddy。
 6. 返回备份路径和回滚方法。
 
-![](https://lzc-playground-1301583638.cos.ap-chengdu.myqcloud.com/guidelines/395/image-20260817225711496.png)
+<img width="3840" height="1982" alt="image" src="https://github.com/user-attachments/assets/ac8d3916-1e09-4ae8-a3ad-b14b1d778898" />
+
 
 ### macOS
 
