@@ -1,0 +1,159 @@
+/* WORKBUDDY_SKIN:pink-crystal-frost */
+/* Pink Crystal · 深空樱雾 — 毛玻璃套装 v6.1 */
+/* 修正：用户要的是「透明度70%」= 不透明度0.30；之前误做成0.70(实心近黑) */
+/* 输入框/侧边栏 = 毛玻璃 70% 透明(0.30) + blur；详情/下拉更实以保证可读 */
+
+/* ═══ 1. 全局变量 ═══ */
+body[data-application-name=workbuddy]{
+  --wb-accent:#ff4d9c;
+  --wb-secondary:#ffb6d0;
+  --wb-surface:transparent;
+  --wb-text:#ffffff;
+
+  /* 背景层：透明，让动画透出 */
+  --cb-bg-primary:transparent !important;
+  --cb-bg-secondary:transparent !important;
+  --cb-panel-bg-primary:transparent !important;
+  --cb-team-member-card-background:transparent !important;
+
+  /* 文字层 */
+  --cb-text-primary:var(--wb-text) !important;
+  --cb-text-secondary:rgba(255,255,255,0.78) !important;
+  --cb-text-disabled:rgba(255,255,255,0.42) !important;
+  --cb-text-link:var(--wb-accent) !important;
+  --cb-text-error-active:var(--wb-accent) !important;
+
+  /* 编辑器/内容区：透明 */
+  --cb-vscode-editor-background:transparent !important;
+  --cb-main-area-background:transparent !important;
+  --cb-content-background:transparent !important;
+  --cb-bg-surface:transparent !important;
+  --cb-vscode-sideBar-background:transparent !important;
+  --cb-vscode-foreground:var(--wb-text) !important;
+  --cb-vscode-editor-foreground:var(--wb-text) !important;
+  --cb-vscode-descriptionForeground:rgba(255,255,255,0.70) !important;
+
+  /* 标题栏：透明 */
+  --cb-vscode-titleBar-activeBackground:transparent !important;
+  --cb-vscode-titleBar-activeForeground:#fff !important;
+  --cb-vscode-titleBar-inactiveBackground:transparent !important;
+  --cb-vscode-titleBar-inactiveForeground:rgba(255,255,255,0.70) !important;
+  --cb-titlebar-control-hover-background:rgba(255,77,156,0.16) !important;
+
+  /* 输入框变量：70%透明(0.30) —— 同时覆盖 --atm-surface 与 --atm-chat-content-bg 两大遮蔽源 */
+  --cb-input-background:rgba(16,8,26,0.30) !important;
+  --cb-vscode-input-background:rgba(16,8,26,0.30) !important;
+  --atm-surface:rgba(16,8,26,0.30) !important;
+  --atm-chat-content-bg:rgba(16,8,26,0.30) !important;
+
+  /* 下拉框：毛玻璃 0.45 */
+  --cb-vscode-dropdown-background:rgba(16,8,26,0.45) !important;
+
+  /* 交互色 */
+  --cb-vscode-list-hoverBackground:rgba(255,77,156,0.16) !important;
+  --cb-vscode-toolbar-hoverBackground:rgba(255,77,156,0.16) !important;
+  --cb-vscode-scrollbarSlider-background:rgba(255,77,156,0.30) !important;
+  --cb-vscode-scrollbarSlider-hoverBackground:rgba(255,77,156,0.50) !important;
+  --cb-vscode-textLink-foreground:var(--wb-accent) !important;
+
+  /* 边框色 */
+  --cb-vscode-widget-border:rgba(255,77,156,0.45) !important;
+  --cb-vscode-panel-border:rgba(255,77,156,0.30) !important;
+  --cb-stroke-secondary:rgba(255,77,156,0.45) !important;
+  --cb-markdown-hr-border-color:rgba(255,77,156,0.30) !important;
+
+  /* 按钮 */
+  --cb-button-dark-background:var(--wb-accent) !important;
+  --cb-button-dark-foreground:#fff !important;
+  --cb-button-dark-hover-background:rgba(255,77,156,0.85) !important;
+  --cb-vscode-button-background:var(--wb-accent) !important;
+  --cb-vscode-button-foreground:#fff !important;
+  --cb-vscode-button-hoverBackground:rgba(255,77,156,0.85) !important;
+}
+
+/* ═══ 2. 动画背景（保留原WebP） ═══ */
+#root{
+  color:var(--wb-text) !important;
+  background:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)),url("data:image/webp;base64,__PINK_CRYSTAL_BG_B64__") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* ═══ 3. 面板透明 ═══ */
+.teams-container,.teams-container.is-mac{background:transparent !important}
+[data-view-id]{background:transparent !important}
+.conversation-list,.main-content,.main-content--welcome,.sidebar-next{background:transparent !important}
+
+/* ═══ 4. 对话区=透明（动画清晰透出） ═══ */
+[data-view-id=main-content]{background:transparent !important}
+
+/* ═══ 5. 侧边栏=毛玻璃 70%透明(0.30) ═══ */
+[data-view-id=sidebar]{
+  background:rgba(16,8,26,0.30) !important;
+  border:none !important;
+  backdrop-filter:blur(20px) saturate(1.12) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.12) !important;
+}
+
+/* ═══ 6. 详情面板=毛玻璃 50%透明(0.50) ═══ */
+[data-view-id=detail-panel]{
+  background:rgba(16,8,26,0.50) !important;
+  backdrop-filter:blur(18px) saturate(1.08) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.08) !important;
+}
+
+/* ═══ 7. ⭐ 输入框=毛玻璃 70%透明(0.30)（核心修正） ═══ */
+/* 7a. 变量覆盖：同时打 --atm-surface 与 --atm-chat-content-bg 两大遮蔽源 */
+body[data-application-name=workbuddy] .atm-modal-chat-input,
+body[data-application-name=workbuddy] .atm-modal-chat-input *{
+  --atm-surface:rgba(16,8,26,0.30) !important;
+  --atm-chat-content-bg:rgba(16,8,26,0.30) !important;
+  --cb-input-background:rgba(16,8,26,0.30) !important;
+  --cb-main-area-background:rgba(16,8,26,0.30) !important;
+}
+/* 7b. 直接打中可见输入体（绕过变量解析，确保生效） */
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_mainArea_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_content_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input textarea,
+body[data-application-name=workbuddy] .atm-modal-chat-input [contenteditable]{
+  background:rgba(16,8,26,0.30) !important;
+  backdrop-filter:blur(16px) saturate(1.2) !important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.2) !important;
+  border:1px solid rgba(255,77,156,0.35) !important;
+  border-radius:12px !important;
+}
+/* 7c. 聚焦光晕 */
+body[data-application-name=workbuddy] .atm-modal-chat-input:focus-within,
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_mainArea_"]:focus-within{
+  border-color:rgba(255,77,156,0.70) !important;
+  box-shadow:0 0 12px rgba(255,77,156,0.25),0 0 4px rgba(255,77,156,0.15) !important;
+}
+
+/* ═══ 8. 下拉框/弹出层=毛玻璃 0.45 ═══ */
+body[data-application-name=workbuddy] .cb-dark,
+body[data-application-name=workbuddy] [role="listbox"],
+body[data-application-name=workbuddy] [role="menu"],
+body[data-application-name=workbuddy] .monaco-menu{
+  background:rgba(16,8,26,0.45) !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,77,156,0.45) !important;
+}
+
+/* ═══ 9. Checkbox / Switch ═══ */
+body[data-application-name=workbuddy] .cb-checkbox--checked .cb-checkbox__box,
+body[data-application-name=workbuddy] .cb-switch--checked .cb-switch__track{
+  background:var(--wb-accent) !important;
+  border-color:var(--wb-accent) !important;
+}
+
+/* ═══ 10. Tooltip ═══ */
+body[data-application-name=workbuddy] .cb-tooltip{
+  background:rgba(16,8,26,0.90) !important;
+  border:1px solid rgba(255,77,156,0.45) !important;
+  color:var(--wb-text) !important;
+}
+
+/* END SKIN */

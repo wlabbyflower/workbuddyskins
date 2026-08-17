@@ -1,0 +1,806 @@
+/* WORKBUDDY_SKIN:pink-crystal-frost-static */
+/* Pink Crystal · 深空樱雾 — 毛玻璃套装（静态版） */
+/* 与动态版共享同一套毛玻璃参数与「侧栏无边」最终界面； */
+/* 区别仅在背景：静态版使用单帧静态图（JPEG），无动画、包体更小、加载更快。 */
+/* 清晰亮图版：背景轻遮罩 0.18；输入框 0.40；侧栏 0.26；取消对话主区全屏模糊。 */
+
+/* ═══ 1. 全局变量 ═══ */
+body[data-application-name=workbuddy]{
+  --wb-accent:#ff4d9c;
+  --wb-secondary:#ffb6d0;
+  --wb-surface:rgba(16,8,26,0.40);
+  --wb-text:#ffffff;
+
+  /* 背景层：透明，让静态图透出 */
+  --cb-bg-primary:transparent !important;
+  --cb-bg-secondary:transparent !important;
+  --cb-panel-bg-primary:transparent !important;
+  --cb-team-member-card-background:transparent !important;
+
+  /* 文字层 */
+  --cb-text-primary:var(--wb-text) !important;
+  --cb-text-secondary:rgba(255,255,255,0.82) !important;
+  --cb-text-disabled:rgba(255,255,255,0.46) !important;
+  --cb-text-link:var(--wb-accent) !important;
+  --cb-text-error-active:var(--wb-accent) !important;
+
+  /* 编辑器/内容区：透明 */
+  --cb-vscode-editor-background:transparent !important;
+  --cb-main-area-background:transparent !important;
+  --cb-content-background:transparent !important;
+  --cb-bg-surface:transparent !important;
+  --cb-vscode-sideBar-background:transparent !important;
+  --cb-vscode-foreground:var(--wb-text) !important;
+  --cb-vscode-editor-foreground:var(--wb-text) !important;
+  --cb-vscode-descriptionForeground:rgba(255,255,255,0.70) !important;
+
+  /* 标题栏：透明 */
+  --cb-vscode-titleBar-activeBackground:transparent !important;
+  --cb-vscode-titleBar-activeForeground:#fff !important;
+  --cb-vscode-titleBar-inactiveBackground:transparent !important;
+  --cb-vscode-titleBar-inactiveForeground:rgba(255,255,255,0.70) !important;
+  --cb-titlebar-control-hover-background:rgba(255,77,156,0.16) !important;
+
+  /* 输入框、用户气泡：透明，直接匹配工作区背景 */
+  --cb-input-background:transparent !important;
+  --cb-vscode-input-background:transparent !important;
+  --atm-surface:transparent !important;
+  --atm-chat-content-bg:transparent !important;
+  --cb-user-bubble-bg:transparent !important;
+
+  /* 下拉框：0.45 */
+  --cb-vscode-dropdown-background:rgba(16,8,26,0.45) !important;
+
+  /* 交互色 */
+  --cb-vscode-list-hoverBackground:rgba(255,77,156,0.16) !important;
+  --cb-vscode-toolbar-hoverBackground:rgba(255,77,156,0.16) !important;
+  --cb-vscode-scrollbarSlider-background:rgba(255,77,156,0.30) !important;
+  --cb-vscode-scrollbarSlider-hoverBackground:rgba(255,77,156,0.50) !important;
+  --cb-textLink-foreground:var(--wb-accent) !important;
+
+  /* 列表选中态：清楚但不过黑 */
+  --cb-vscode-list-activeSelectionBackground:rgba(255,77,156,0.28) !important;
+  --cb-vscode-list-inactiveSelectionBackground:rgba(16,8,26,0.34) !important;
+  --cb-vscode-list-focusBackground:rgba(255,77,156,0.20) !important;
+
+  /* 边框色 */
+  --cb-vscode-widget-border:rgba(255,77,156,0.45) !important;
+  --cb-vscode-panel-border:rgba(255,77,156,0.30) !important;
+  --cb-stroke-secondary:rgba(255,77,156,0.45) !important;
+  --cb-markdown-hr-border-color:rgba(255,77,156,0.30) !important;
+
+  /* 按钮 */
+  --cb-button-dark-background:var(--wb-accent) !important;
+  --cb-button-dark-foreground:#fff !important;
+  --cb-button-dark-hover-background:rgba(255,77,156,0.85) !important;
+  --cb-vscode-button-background:var(--wb-accent) !important;
+  --cb-vscode-button-foreground:#fff !important;
+  --cb-vscode-button-hoverBackground:rgba(255,77,156,0.85) !important;
+}
+
+/* ═══ 2. 静态背景：轻遮罩，保留原图亮度与清晰度 ═══ */
+#root{
+  color:var(--wb-text) !important;
+  background:linear-gradient(rgba(16,8,26,0.18),rgba(16,8,26,0.18)),url("data:image/jpeg;base64,__PINK_CRYSTAL_BG_B64__") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* ═══ 3. 基础面板：保留壁纸，不做全屏深色覆盖 ═══ */
+.teams-container,.teams-container.is-mac{background:transparent !important}
+[data-view-id]{background:transparent !important}
+.conversation-list,.conversation-sidebar,.main-content,.main-content--welcome,.sidebar-next{background:transparent !important}
+
+/* ═══ 4. 对话区：透明且不模糊，壁纸保持清晰 ═══ */
+[data-view-id=main-content],
+.main-content,
+.main-content--welcome{
+  background:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* ═══ 5. 左侧列表：完全匹配右侧对话区的透明清晰风格 ═══ */
+/* 5a. 侧栏主题变量全部透明，避免浅色主题或深色玻璃覆盖壁纸 */
+.teams-container,
+.teams-container.is-mac,
+[data-theme="dark"] .teams-container.is-mac,
+body.dark .teams-container.is-mac,
+.dark .teams-container.is-mac{
+  --wb-home-bg-primary:transparent !important;
+  --wb-home-bg-secondary:transparent !important;
+}
+/* 5b. 侧栏作用域内保持白字，所有内层列表/卡片透明 */
+[data-view-id=sidebar],
+[data-view-id=sidebar] *,
+.conversation-sidebar,
+.conversation-sidebar *,
+.conversation-list,
+.conversation-list *{
+  --wb-color-text-primary:#ffffff !important;
+  --wb-color-text-secondary:rgba(255,255,255,0.82) !important;
+  --wb-color-text-tertiary:rgba(255,255,255,0.60) !important;
+  --wb-text-strong:#ffffff !important;
+  --wb-bg-primary:transparent !important;
+  --wb-bg-secondary:transparent !important;
+  --wb-bg-content:transparent !important;
+  --wb-bg-card:transparent !important;
+  --wb-bg-card-hover:rgba(255,77,156,0.10) !important;
+  --wb-bg-item-selected:transparent !important;
+  --wb-bg-hover:rgba(255,77,156,0.10) !important;
+  --wb-bg-active:rgba(255,77,156,0.14) !important;
+  --wb-bg-active-hover:rgba(255,77,156,0.18) !important;
+  --wb-bg-pill-hover:rgba(255,77,156,0.10) !important;
+  --wb-bg-pill-active:rgba(255,77,156,0.16) !important;
+  --wb-bg-inset-strong:transparent !important;
+  --wb-border-subtle:rgba(255,77,156,0.18) !important;
+  color:#ffffff !important;
+}
+/* 5c. 侧栏和列表容器不加底色、不加模糊，直接透出清晰壁纸 */
+[data-view-id=sidebar],
+.conversation-sidebar,
+.conversation-list,
+.sidebar-next,
+[data-view-id=sidebar] > *,
+.conversation-sidebar > *,
+.conversation-list > *{
+  background:transparent !important;
+  border:none !important;
+  border-left-color:transparent !important;
+  border-right-color:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+/* 5d. 左侧任务 hover：真实容器是 .conversation-agent-card，背景读取 todo-menu token */
+[data-view-id=sidebar],
+.conversation-list{
+  --wb-todo-menu-bg-hover:transparent !important;
+  --wb-todo-menu-bg-active:transparent !important;
+}
+[data-view-id=sidebar] .conversation-agent-card,
+[data-view-id=sidebar] .conversation-agent-card:hover,
+[data-view-id=sidebar] .conversation-agent-card:focus,
+[data-view-id=sidebar] .conversation-agent-card:focus-visible,
+[data-view-id=sidebar] .conversation-agent-card[class*="selected"],
+.conversation-list .conversation-agent-card,
+.conversation-list .conversation-agent-card:hover,
+.conversation-list .conversation-agent-card:focus,
+.conversation-list .conversation-agent-card:focus-visible,
+.conversation-list .conversation-agent-card[class*="selected"]{
+  --wb-todo-menu-bg-hover:transparent !important;
+  --wb-todo-menu-bg-active:transparent !important;
+  --cb-hover-bg:transparent !important;
+  --cb-bg-primary:transparent !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+[data-view-id=sidebar] [role="option"]:hover,
+[data-view-id=sidebar] [role="menuitem"]:hover,
+[data-view-id=sidebar] [aria-current="true"]:hover,
+[data-view-id=sidebar] [aria-selected="true"]:hover,
+[data-view-id=sidebar] [class*="item"]:hover,
+[data-view-id=sidebar] [class*="Item"]:hover,
+[data-view-id=sidebar] [class*="conversation"]:hover,
+[data-view-id=sidebar] [class*="Conversation"]:hover,
+.conversation-sidebar [role="option"]:hover,
+.conversation-list [role="option"]:hover{
+  --wb-color-bg-primary-hover:transparent !important;
+  --wb-color-bg-primary-hover-strong:transparent !important;
+  --wb-color-bg-primary-active:transparent !important;
+  --cb-bg-primary-hover:transparent !important;
+  --cb-bg-primary-active:transparent !important;
+  --cb-hover-bg:transparent !important;
+  --wb-bg-hover:transparent !important;
+  --wb-bg-active:transparent !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+[data-view-id=sidebar] [role="option"]:hover::before,
+[data-view-id=sidebar] [role="option"]:hover::after,
+[data-view-id=sidebar] [role="menuitem"]:hover::before,
+[data-view-id=sidebar] [role="menuitem"]:hover::after,
+[data-view-id=sidebar] [class*="item"]:hover::before,
+[data-view-id=sidebar] [class*="item"]:hover::after,
+[data-view-id=sidebar] [class*="Item"]:hover::before,
+[data-view-id=sidebar] [class*="Item"]:hover::after{
+  background:transparent !important;
+  background-color:transparent !important;
+  box-shadow:none !important;
+  border-color:transparent !important;
+}
+/* 5e. 侧栏分组标题（置顶任务 / 任务）改成黑字，保持背景不变 */
+[data-view-id=sidebar] .conversation-section-label-text,
+.conversation-sidebar .conversation-section-label-text,
+.conversation-list .conversation-section-label-text{
+  color:rgba(0,0,0,0.85) !important;
+}
+[data-view-id=sidebar] .conversation-section-chevron,
+.conversation-sidebar .conversation-section-chevron,
+.conversation-list .conversation-section-chevron{
+  color:rgba(0,0,0,0.60) !important;
+}
+[data-view-id=sidebar] .conversation-section-label:hover .conversation-section-label-text,
+.conversation-sidebar .conversation-section-label:hover .conversation-section-label-text,
+.conversation-list .conversation-section-label:hover .conversation-section-label-text,
+[data-view-id=sidebar] .conversation-section-label:hover .conversation-section-chevron,
+.conversation-sidebar .conversation-section-label:hover .conversation-section-chevron,
+.conversation-list .conversation-section-label:hover .conversation-section-chevron{
+  color:rgba(0,0,0,0.85) !important;
+}
+
+/* ═══ 6. 详情面板：局部玻璃 ═══ */
+[data-view-id=detail-panel]{
+  background:rgba(16,8,26,0.32) !important;
+  backdrop-filter:blur(10px) saturate(1.06) !important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.06) !important;
+}
+
+/* ═══ 7. 输入框：白色磨玻璃 ═══ */
+/* 7a. 变量覆盖：背景、边框、文字都改浅色磨玻璃 */
+body[data-application-name=workbuddy] .atm-modal-chat-input,
+body[data-application-name=workbuddy] .atm-modal-chat-input *{
+  --atm-surface:rgba(255,255,255,0.18) !important;
+  --atm-chat-content-bg:rgba(255,255,255,0.18) !important;
+  --cb-input-background:transparent !important;
+  --cb-vscode-input-background:transparent !important;
+  --cb-main-area-background:rgba(255,255,255,0.18) !important;
+  --cb-content-background:rgba(255,255,255,0.18) !important;
+  --wb-bg-primary:rgba(255,255,255,0.18) !important;
+  --wb-border-default:rgba(255,255,255,0.30) !important;
+  --wb-border-focus:rgba(255,255,255,0.55) !important;
+  --wb-color-text-primary:rgba(0,0,0,0.85) !important;
+  --wb-color-text-placeholder:rgba(0,0,0,0.45) !important;
+  --cb-input-foreground:rgba(0,0,0,0.85) !important;
+  --cb-text-placeholder:rgba(0,0,0,0.45) !important;
+  color:rgba(0,0,0,0.85) !important;
+}
+/* 7b. 实际可视外壳 _mainArea_ 做磨玻璃 */
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_mainArea_"]{
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  border-radius:12px !important;
+  box-shadow:0 4px 16px rgba(0,0,0,0.08) !important;
+}
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_content_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_editor_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_input_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input textarea,
+body[data-application-name=workbuddy] .atm-modal-chat-input [contenteditable]{
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  color:rgba(0,0,0,0.85) !important;
+  caret-color:rgba(0,0,0,0.85) !important;
+}
+body[data-application-name=workbuddy] .atm-modal-chat-input svg{
+  color:rgba(0,0,0,0.60) !important;
+}
+body[data-application-name=workbuddy] .atm-modal-chat-input textarea::placeholder,
+body[data-application-name=workbuddy] .atm-modal-chat-input [contenteditable]:empty::before{
+  color:rgba(0,0,0,0.45) !important;
+}
+/* 7c. 聚焦：白边框 + 淡阴影 */
+body[data-application-name=workbuddy] .atm-modal-chat-input:focus-within [class*="_mainArea_"],
+body[data-application-name=workbuddy] .atm-modal-chat-input [class*="_mainArea_"]:focus-within{
+  border-color:rgba(255,255,255,0.55) !important;
+  box-shadow:0 4px 20px rgba(0,0,0,0.10) !important;
+}
+
+/* ═══ 7d. 我发出的对话：透明气泡，直接透出工作区背景 ═══ */
+body[data-application-name=workbuddy] [class*="_userMessageBubble_"],
+body[data-application-name=workbuddy] .user-message-editor,
+body[data-application-name=workbuddy] [class*="_userMessage_"]{
+  --cb-user-bubble-bg:transparent !important;
+  --cb-user-bubble-color:#ffffff !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  box-shadow:none !important;
+  color:#ffffff !important;
+}
+body[data-application-name=workbuddy] [class*="_userMessageBubble_"]{
+  border:1px solid rgba(255,77,156,0.18) !important;
+}
+
+/* ═══ 8. 通用下拉框/弹出层＝白色磨玻璃 ═══ */
+body[data-application-name=workbuddy] .cb-dark,
+body[data-application-name=workbuddy] [role="listbox"],
+body[data-application-name=workbuddy] [role="menu"],
+body[data-application-name=workbuddy] .monaco-menu{
+  background:rgba(255,255,255,0.18) !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+}
+
+/* ═══ 8b. 模型选择器下拉：彻底去白底、强制黑字 ═══ */
+/*
+  真实 DOM 类名是 CSS Module 哈希类，不是 .cr-model-selector__*。
+  菜单容器：._menu_qsclh_83._modelSelectorMenu_qsclh_110
+  子菜单容器：._subMenu_qsclh_111._modelSelectorMenu_qsclh_110
+  Max 模式头部：._header_qsclh_328._modelSelectorHeader_qsclh_338
+  分组标题：._groupTitle_qsclh_403._modelSelectorGroupTitle_qsclh_423
+  模型项：._item_qsclh_208._modelSelectorItem_qsclh_521
+  模型标签：._label_qsclh_291._modelSelectorLabel_qsclh_543
+  模型描述/倍率：._description_qsclh_299._modelSelectorDescription_qsclh_566
+  左侧图标：._leftIcon_qsclh_256._modelSelectorLeftIcon_qsclh_555
+  子菜单箭头：._subMenuArrow_qsclh_487
+  Auto 区域：._autoModeSection_zugj5_200 / ._autoModeItem_zugj5_213 / ._autoModeLabel_zugj5_237 / ._autoModeMessage_zugj5_245
+  子菜单内模型项：._modelItem_162g9_1 / ._modelName_162g9_12 / ._modelIcon_162g9_28
+*/
+
+/* 8b-0. 容器：注入全部相关变量，并把背景/边框统一改成白色磨玻璃
+   注意：模型选择器可能通过 Portal 渲染到 body 外，所以这里用全局属性选择器，
+   不再加 body[data-application-name=workbuddy] 前缀。 */
+[class*="_modelSelectorMenu_"]{
+  --cb-dropdown-bg-color:rgba(255,255,255,0.18) !important;
+  --cb-panel-bg-primary:rgba(255,255,255,0.18) !important;
+  --cb-text-primary:rgba(0,0,0,0.85) !important;
+  --cb-text-secondary:rgba(0,0,0,0.60) !important;
+  --cb-text-tertiary:rgba(0,0,0,0.45) !important;
+  --cb-text-highlight:#006ab1 !important;
+  --cb-input-foreground:rgba(0,0,0,0.85) !important;
+  --cb-input-border-color:rgba(255,255,255,0.30) !important;
+  --cb-dropdown-border-color:rgba(255,255,255,0.30) !important;
+  --cb-dropdown-footer-bg:rgba(255,255,255,0.18) !important;
+  --cb-hover-bg:rgba(255,255,255,0.22) !important;
+  --cb-list-item-selected-bg:rgba(255,255,255,0.28) !important;
+  --cb-list-item-foreground:rgba(0,0,0,0.85) !important;
+  --cb-dropdown-item-hover-bg-color:rgba(255,255,255,0.22) !important;
+  --cb-dropdown-item-selected-bg-color:rgba(255,255,255,0.28) !important;
+  --cb-dropdown-item-selected-color:rgba(0,0,0,0.85) !important;
+  --cb-popover-divider:rgba(0,0,0,0.08) !important;
+  --cb-scrollbar-thumb:rgba(0,0,0,0.15) !important;
+  --cb-scrollbar-thumb-hover:rgba(0,0,0,0.25) !important;
+  --chat-input-area-header-font-color:rgba(0,0,0,0.85) !important;
+  --cr-text-primary:rgba(0,0,0,0.85) !important;
+  --cr-text-secondary:rgba(0,0,0,0.60) !important;
+  --cr-text-tertiary:rgba(0,0,0,0.45) !important;
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+  color:rgba(0,0,0,0.85) !important;
+}
+
+/* 8b-1. 所有直接子容器/头部/分组/搜索/Auto 区/Footer：强制透底（防止 shorthand background 覆盖） */
+[class*="_modelSelectorMenu_"] [class*="_header_"],
+[class*="_modelSelectorMenu_"] [class*="_groupTitle_"],
+[class*="_modelSelectorMenu_"] [class*="_searchContainer_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeSection_"],
+[class*="_modelSelectorMenu_"] [class*="_footer_"],
+[class*="_modelSelectorMenu_"] [class*="_empty_"],
+[class*="_modelSelectorMenu_"] [class*="_separator_"],
+[class*="_modelSelectorMenu_"] [class*="_scrollContainer_"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border-color:rgba(0,0,0,0.08) !important;
+}
+
+/* 8b-2. 模型项 / Auto 行 / 子菜单模型项：透出容器毛玻璃 */
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeItem_"],
+[class*="_modelSelectorMenu_"] [class*="_modelItem_162g9_1"],
+[class*="_modelSelectorMenu_"] [class*="_item_qsclh_208"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+}
+
+/* 8b-3. 悬停/选中/激活项：白色半透明底 */
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"]:hover:not([class*="_disabled_"]),
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"]:focus,
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"]:focus-visible,
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"][class*="_selected_"],
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"]:active:not([class*="_disabled_"]),
+[class*="_modelSelectorMenu_"] [class*="_modelItem_162g9_1"]:hover:not([class*="_disabled_"]),
+[class*="_modelSelectorMenu_"] [class*="_modelItem_162g9_1"][class*="_selected_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeItem_"]:hover{
+  background-color:rgba(255,255,255,0.22) !important;
+}
+
+/* 8b-4. 文字：全部强制黑色，仅保留语义标签（折扣/免费等 highlight）和已勾选绿勾 */
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorLabel_"],
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorDescription_"],
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorHeader_"],
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorGroupTitle_"],
+[class*="_modelSelectorMenu_"] [class*="_modelName_"],
+[class*="_modelSelectorMenu_"] [class*="_modelExtra_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeLabel_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeMessage_"],
+[class*="_modelSelectorMenu_"] [class*="_leftIcon_"],
+[class*="_modelSelectorMenu_"] [class*="_subMenuArrow_"],
+[class*="_modelSelectorMenu_"] [class*="_groupChevron_"],
+[class*="_modelSelectorMenu_"] [class*="_searchInput_"],
+[class*="_modelSelectorMenu_"] [class*="_searchIcon_"],
+[class*="_modelSelectorMenu_"] [class*="_searchClear_"],
+[class*="_modelSelectorMenu_"] [class*="_footer_"],
+[class*="_modelSelectorMenu_"] [class*="_empty_"]{
+  color:rgba(0,0,0,0.85) !important;
+}
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorDescription_"],
+[class*="_modelSelectorMenu_"] [class*="_autoModeMessage_"],
+[class*="_modelSelectorMenu_"] [class*="_modelExtra_"],
+[class*="_modelSelectorMenu_"] [class*="_searchIcon_"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+/* 针对主菜单右侧倍率（0.25x 等）再补一道直接选择器，避免被源 CSS 变量回退覆盖 */
+[class*="_item_qsclh_208"] [class*="_description_qsclh_299"],
+[class*="_item_qsclh_208"] [class*="_modelSelectorDescription_qsclh_566"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorHeader_"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItem_"][class*="_selected_"] [class*="_modelSelectorLabel_"],
+[class*="_modelSelectorMenu_"] [class*="_modelItem_162g9_1"][class*="_selected_"] [class*="_modelName_162g9_12"]{
+  color:rgba(0,0,0,0.85) !important;
+}
+
+/* 8b-5. 已勾选绿勾保留 */
+[class*="_modelSelectorMenu_"] [class*="_selected_"] svg,
+[class*="_modelSelectorMenu_"] [class*="_modelSelectorItemCheck_"] svg{
+  color:#00b96b !important;
+}
+
+/* 8b-6. placeholder 变淡黑 */
+[class*="_modelSelectorMenu_"] [class*="_searchInput_"]::placeholder{
+  color:rgba(0,0,0,0.40) !important;
+}
+
+/* 8b-7. 终极兜底：直接对模型选择器的真实 CSS Module 基础类写全局 !important，
+   不再依赖任何祖先/Portal 层级。这些哈希类由构建工具生成，基本只用于该组件。 */
+[class*="_menu_qsclh_83"][class*="_modelSelectorMenu_qsclh_110"],
+[class*="_subMenu_qsclh_111"][class*="_modelSelectorMenu_qsclh_110"]{
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+}
+[class*="_header_qsclh_328"][class*="_modelSelectorHeader_qsclh_338"],
+[class*="_searchContainer_qsclh_116"][class*="_modelSelectorSearchContainer_qsclh_124"],
+[class*="_groupTitle_qsclh_403"][class*="_modelSelectorGroupTitle_qsclh_423"],
+[class*="_autoModeSection_zugj5_200"],
+[class*="_footer_qsclh_"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border-color:rgba(0,0,0,0.08) !important;
+}
+[class*="_item_qsclh_208"],
+[class*="_autoModeItem_zugj5_213"],
+[class*="_modelItem_162g9_1"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+}
+[class*="_item_qsclh_208"]:hover:not([class*="_disabled_qsclh_30"]),
+[class*="_item_qsclh_208"][class*="_selected_qsclh_241"],
+[class*="_item_qsclh_208"]:focus,
+[class*="_item_qsclh_208"]:focus-visible,
+[class*="_autoModeItem_zugj5_213"]:hover,
+[class*="_modelItem_162g9_1"]:hover,
+[class*="_modelItem_162g9_1"][class*="_selected_162g9_18"]{
+  background-color:rgba(255,255,255,0.22) !important;
+}
+[class*="_item_qsclh_208"][class*="_selected_qsclh_241"]{
+  background-color:rgba(255,255,255,0.28) !important;
+}
+[class*="_label_qsclh_291"],
+[class*="_description_qsclh_299"],
+[class*="_header_qsclh_328"][class*="_modelSelectorHeader_qsclh_338"] span,
+[class*="_autoModeLabel_zugj5_237"],
+[class*="_autoModeMessage_zugj5_245"],
+[class*="_modelName_162g9_12"],
+[class*="_modelExtra_1pjf8_"],
+[class*="_leftIcon_qsclh_256"] svg,
+[class*="_rightIcon_qsclh_257"] svg,
+[class*="_subMenuArrow_qsclh_487"] svg{
+  color:rgba(0,0,0,0.85) !important;
+}
+[class*="_description_qsclh_299"],
+[class*="_autoModeMessage_zugj5_245"],
+[class*="_modelExtra_1pjf8_"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_header_qsclh_328"][class*="_modelSelectorHeader_qsclh_338"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_selectedIcon_qsclh_258"] svg{
+  color:#00b96b !important;
+}
+
+/* 8b-8. 当前独立模型选择器（_zugj5_ + _162g9_）通过 Portal 渲染，
+   根节点不是 _modelSelectorMenu_，必须直接覆盖真实组件类。 */
+[class*="_popover_zugj5_8"]{
+  --cb-dropdown-bg-color:rgba(255,255,255,0.18) !important;
+  --cb-text-primary:rgba(0,0,0,0.85) !important;
+  --cb-text-secondary:rgba(0,0,0,0.60) !important;
+  --cb-text-tertiary:rgba(0,0,0,0.45) !important;
+  --cb-popover-border:rgba(255,255,255,0.30) !important;
+  --cb-popover-divider:rgba(0,0,0,0.08) !important;
+  --cb-hover-bg:rgba(255,255,255,0.22) !important;
+  --cb-list-item-selected-bg:rgba(255,255,255,0.28) !important;
+  --chat-input-area-header-font-color:rgba(0,0,0,0.85) !important;
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+  color:rgba(0,0,0,0.85) !important;
+}
+[class*="_popover_zugj5_8"] [class*="_groupLabel_zugj5_80"],
+[class*="_popover_zugj5_8"] [class*="_autoModeSection_zugj5_200"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+}
+[class*="_popover_zugj5_8"] [class*="_modelListContainer_zugj5_41"][class*="_modelListAfterDivider_zugj5_53"]{
+  border-top:1px solid rgba(0,0,0,0.08) !important;
+}
+[class*="_groupLabelText_zugj5_93"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_modelCredits_162g9_126"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+
+/* ═══ 8c. 模型选择器二级/三级子菜单（_1slp5_ 组件）= 白色磨玻璃 + 黑字 ═══ */
+/* 当鼠标悬停到带子菜单的模型上时，会从右侧弹出一个二级/三级详情面板。
+   该面板使用独立的 CSS Module 哈希类 _1slp5_*，完全不在 _modelSelectorMenu_ 容器内，
+   所以之前的 8b 规则覆盖不到。 */
+[class*="_subMenu_1slp5_"],
+[class*="_subMenuPanel_1slp5_"]{
+  --cb-dropdown-bg-color:rgba(255,255,255,0.18) !important;
+  --cb-panel-bg-primary:rgba(255,255,255,0.18) !important;
+  --cb-text-primary:rgba(0,0,0,0.85) !important;
+  --cb-text-secondary:rgba(0,0,0,0.60) !important;
+  --cb-text-tertiary:rgba(0,0,0,0.45) !important;
+  --cb-hover-bg:rgba(255,255,255,0.22) !important;
+  --cb-list-item-selected-bg:rgba(255,255,255,0.28) !important;
+  --cb-popover-border:rgba(255,255,255,0.30) !important;
+  --cb-popover-divider:rgba(0,0,0,0.08) !important;
+  --cb-shadow-popover:0 8px 24px rgba(0,0,0,0.08) !important;
+  --cb-shadow-message-toolbar:0 8px 24px rgba(0,0,0,0.08) !important;
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+  color:rgba(0,0,0,0.85) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_headerSection_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_header_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_divider_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_metaRow_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_actionRow_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_panelToggleRow_1slp5_"],
+[class*="_subMenuPanel_1slp5_"] [class*="_panelItem_1slp5_"],
+[class*="_subMenuPanel_1slp5_"] [class*="_panelSectionLabel_1slp5_"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_modelName_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_metaLabel_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_actionLabel_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_panelToggleLabel_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_panelItem_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_panelSectionLabel_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_chevron_1slp5_"] svg,
+[class*="_subMenu_1slp5_"] [class*="_enterpriseIcon_1slp5_"] svg{
+  color:rgba(0,0,0,0.85) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_description_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_externalHint_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_metaValue_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_actionValue_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_promotionFooterText_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_creditsOriginal_1slp5_"]{
+  color:rgba(0,0,0,0.60) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_creditsDiscounted_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_promotionFooterAction_1slp5_"]{
+  color:#006ab1 !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_actionRowClickable_1slp5_"]:hover,
+[class*="_subMenu_1slp5_"] [class*="_panelItem_1slp5_"]:hover,
+[class*="_subMenu_1slp5_"] [class*="_panelItemActive_1slp5_"]{
+  background-color:rgba(255,255,255,0.22) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_divider_1slp5_"]{
+  background:rgba(0,0,0,0.08) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_slider_1slp5_242"]{
+  background-color:rgba(0,0,0,0.15) !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_slider_1slp5_242"]:before{
+  background-color:#fff !important;
+}
+[class*="_subMenu_1slp5_"] [class*="_switch_1slp5_230"] input:checked + [class*="_slider_1slp5_242"]{
+  background-color:#00b96b !important;
+}
+
+/* 8c-fix. chevron 在源码里用 color:var(--cb-text-primary,#d2d3e0) 亮色回退，
+   必须在菜单作用域内强制为黑，避免子菜单箭头发白 */
+[class*="_subMenu_1slp5_"] [class*="_chevron_1slp5_"],
+[class*="_subMenu_1slp5_"] [class*="_chevron_1slp5_"] svg{
+  color:rgba(0,0,0,0.85) !important;
+}
+
+/* 8c-终极兜底：把两个菜单内部所有文本元素强制为黑色，
+   仅排除图标/勾选/折扣蓝/促销蓝/金色徽章等强调色（它们保持各自颜色）。
+   这样即使源码未来新增了某个未被单独列出的文本类，也不会再出现白字。 */
+[class*="_modelSelectorMenu_"] :is(div,span,p,a,label,li):not([class*="Icon"]):not([class*="Check"]):not([class*="Discount"]):not([class*="Promotion"]):not([class*="Badge"]):not([class*="Highlight"]):not(svg):not(path),
+[class*="_subMenu_1slp5_"] :is(div,span,p,a,label,li):not([class*="Icon"]):not([class*="Check"]):not([class*="Discount"]):not([class*="Promotion"]):not([class*="Badge"]):not([class*="Highlight"]):not(svg):not(path){
+  color:rgba(0,0,0,0.85) !important;
+}
+
+/* ═══ 9. 左侧选中对话任务：真实卡片透明，不保留整圈焦点描边 ═══ */
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card[class*="selected"],
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card[class*="selected"]:hover,
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card:focus,
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card:focus-visible{
+  background:transparent !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+/* 9a. 任务卡父包装层也会在 selected/hover 状态绘制 active 背景；清除父层与伪元素 */
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch,
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch:hover,
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch:focus,
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch:focus-visible,
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch:has(.conversation-agent-card[class*="selected"]),
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch:hover,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch:focus,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch:focus-visible,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch:has(.conversation-agent-card[class*="selected"]){
+  --wb-todo-menu-bg-hover:transparent !important;
+  --wb-todo-menu-bg-active:transparent !important;
+  --cb-hover-bg:transparent !important;
+  --cb-bg-primary:transparent !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch::before,
+body[data-application-name=workbuddy] .conversation-list .conversation-item--batch::after,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch::before,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-item--batch::after{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+  outline:none !important;
+}
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card[class*="menuOpen"],
+body[data-application-name=workbuddy] .conversation-list .conversation-agent-card[class*="menuOpen"]:hover,
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-agent-card[class*="menuOpen"],
+body[data-application-name=workbuddy] [data-view-id=sidebar] .conversation-agent-card[class*="menuOpen"]:hover{
+  --wb-todo-menu-bg-hover:transparent !important;
+  --wb-todo-menu-bg-active:transparent !important;
+  --cb-hover-bg:transparent !important;
+  --cb-bg-primary:transparent !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+body[data-application-name=workbuddy] .codebuddy-menu-container .menu-item:hover,
+body[data-application-name=workbuddy] .codebuddy-menu-container .menu-item.focused,
+body[data-application-name=workbuddy] [role="menuitem"][aria-selected="true"],
+body[data-application-name=workbuddy] [role="option"][aria-selected="true"],
+body[data-application-name=workbuddy] [aria-current="true"]{
+  background:transparent !important;
+  border-left:2px solid rgba(255,77,156,0.42) !important;
+}
+body[data-application-name=workbuddy] [data-view-id=sidebar] [aria-selected="true"],
+body[data-application-name=workbuddy] [data-view-id=sidebar] [aria-current="true"]{
+  background:transparent !important;
+  box-shadow:inset 2px 0 0 rgba(255,77,156,0.42) !important;
+}
+
+/* ═══ 10. Checkbox / Switch ═══ */
+body[data-application-name=workbuddy] .cb-checkbox--checked .cb-checkbox__box,
+body[data-application-name=workbuddy] .cb-switch--checked .cb-switch-track{
+  background:var(--wb-accent) !important;
+  border-color:var(--wb-accent) !important;
+}
+
+/* ═══ 11. Tooltip ═══ */
+body[data-application-name=workbuddy] .cb-tooltip,
+body[data-application-name=workbuddy] .cb-tooltip.cb-tooltip--dark,
+body[data-application-name=workbuddy] .cb-tooltip.cb-toolbar-tooltip,
+body[data-application-name=workbuddy] .cb-tooltip[class*="_cardSurface_"],
+body[data-application-name=workbuddy] [role="tooltip"]{
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+  color:rgba(0,0,0,0.85) !important;
+}
+body[data-application-name=workbuddy] .cb-tooltip .cb-tooltip-content,
+body[data-application-name=workbuddy] .cb-tooltip.cb-tooltip--dark .cb-tooltip-content,
+body[data-application-name=workbuddy] .cb-tooltip.cb-toolbar-tooltip .cb-tooltip-content,
+body[data-application-name=workbuddy] .cb-tooltip[class*="_cardSurface_"] .cb-tooltip-content,
+body[data-application-name=workbuddy] [role="tooltip"] *{
+  color:rgba(0,0,0,0.85) !important;
+}
+body[data-application-name=workbuddy] .cb-tooltip .cb-tooltip-arrow,
+body[data-application-name=workbuddy] .cb-tooltip.cb-tooltip--dark .cb-tooltip-arrow,
+body[data-application-name=workbuddy] .cb-tooltip.cb-toolbar-tooltip .cb-tooltip-arrow,
+body[data-application-name=workbuddy] .cb-tooltip[class*="_cardSurface_"] .cb-tooltip-arrow{
+  color:rgba(255,255,255,0.30) !important;
+}
+
+/* ═══ 12. User menu / account popover ═══ */
+body[data-application-name=workbuddy] .user-menu-popover,
+body[data-application-name=workbuddy] .user-menu-popover.user-menu-popover--portal,
+body[data-application-name=workbuddy] .user-menu-popover.user-menu-popover--bottom{
+  --wb-bg-card:rgba(255,255,255,0.18) !important;
+  --wb-bg-hover:rgba(255,255,255,0.22) !important;
+  --user-menu-hover-bg:rgba(255,255,255,0.22) !important;
+  --wb-color-text-primary:rgba(0,0,0,0.85) !important;
+  --wb-color-text-secondary:rgba(0,0,0,0.60) !important;
+  --wb-color-text-tertiary:rgba(0,0,0,0.45) !important;
+  --wb-icon-primary:rgba(0,0,0,0.75) !important;
+  --wb-icon-secondary:rgba(0,0,0,0.55) !important;
+  --wb-border-subtle:rgba(255,255,255,0.30) !important;
+  --wb-shadow-popover:0 8px 24px rgba(0,0,0,0.08) !important;
+  background:rgba(255,255,255,0.18) !important;
+  background-color:rgba(255,255,255,0.18) !important;
+  background-image:none !important;
+  backdrop-filter:blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.15) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08) !important;
+}
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-header-name,
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-item-label,
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-item-value,
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-item-subtitle{
+  color:rgba(0,0,0,0.85) !important;
+}
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-separator{
+  background:rgba(0,0,0,0.08) !important;
+}
+body[data-application-name=workbuddy] .user-menu-popover .user-menu-item svg{
+  color:rgba(0,0,0,0.75) !important;
+}
+
+/* END SKIN */

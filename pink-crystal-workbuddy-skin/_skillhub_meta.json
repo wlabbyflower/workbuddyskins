@@ -1,0 +1,17 @@
+{
+  "name": "WorkBuddy 换肤",
+  "installedAt": 1786955662229,
+  "source": "marketplace",
+  "version": "4.0.0",
+  "skillId": "skill_2079402133322457088",
+  "examples_zh": [
+    "用这张图片替换我的 WorkBuddy 主题，保留现在全部毛玻璃和细节修复。",
+    "把这张新图片应用成 WorkBuddy 背景，并完整重建、签名、重启和验证。"
+  ],
+  "description_zh": "提供一张图片即可完成 WorkBuddy 全量换肤，保留全部毛玻璃和组件细节修复，并自动完成备份、ASAR 定点注入、完整性校验、签名、重启与回滚。",
+  "description_en": "Apply a complete WorkBuddy theme from one image while preserving all frosted-glass component fixes, with backup, safe ASAR patching, verification, signing, restart, and rollback.",
+  "userModified": true,
+  "iconSource": "https://openplatform-cdn.codebuddy.cn/public/operation-platform/skill-icons/skill_2079402133322457088/198ac983867d07fd.jpg",
+  "iconLocalPath": "_icon.jpg",
+  "iconDownloadedFrom": "https://openplatform-cdn.codebuddy.cn/public/operation-platform/skill-icons/skill_2079402133322457088/198ac983867d07fd.jpg"
+}
