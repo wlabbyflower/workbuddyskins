@@ -48,6 +48,29 @@ cp -R workbuddyskins/pink-crystal-workbuddy-skin "$HOME/.workbuddy/skills/"
 
 Agent 会依据 `SKILL.md` 检查运行环境，并执行对应平台的脚本。
 
+直接在对话框里上传一张图片，然后输入：
+
+```text
+@skill:"WorkBuddy 换肤" 用这张图片替换我的 WorkBuddy 主题，保留现在全部毛玻璃和细节修复。
+```
+
+也可以输入更简短的版本：
+
+```text
+@skill:"WorkBuddy 换肤" 用这张图片给 WorkBuddy 换肤。
+```
+
+技能会自动执行：
+
+1. 读取并处理图片。
+2. 替换主题背景。
+3. 保留输入框、侧栏、菜单和模型选择器等全部修复。
+4. 备份并修改 `app.asar`。
+5. 校验完整性、重新签名并彻底重启 WorkBuddy。
+6. 返回备份路径和回滚方法。
+
+![](https://lzc-playground-1301583638.cos.ap-chengdu.myqcloud.com/guidelines/395/image-20260817225711496.png)
+
 ### macOS
 
 使用一张图片生成并应用静态主题：
